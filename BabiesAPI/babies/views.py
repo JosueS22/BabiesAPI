@@ -44,7 +44,11 @@ class BabyViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     @action(detail=True, methods=['get'])
-    def notify(self, request, pk=None):
+    def events(self, request, pk=None):
         baby = self.get_object()
+        response = []
+        for event in Event.objects.filter(baby=baby):
+            response.append(EventSerializer(event).data)
+        return Response(response)
 
         
